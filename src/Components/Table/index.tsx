@@ -5,8 +5,44 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useEffect, useState } from 'react';
+
+//tipo de dados do colaborador
+type Colaborador = {
+    id: number;
+    name: string;
+    email: string;
+    address: {
+        city: string;
+    };
+    company: {
+        name: string;
+    }
+}
 
 function TableColaboradores() {
+
+const [ colaboradores, setColaboradores ] = useState<Colaborador[]>([]);
+const [ loading, setLoading ] = useState(true);
+
+//chamada para a API
+useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json())
+    .then(data => {
+        setColaboradores(data);
+        setLoading(false);
+    })
+    .catch(error => {
+        console.error('Erro ao buscar colaboradores:', error);
+        setLoading(false);
+    });
+}, []);
+
+if (loading) {
+    return <div>Carregando</div>;
+}
+
     return (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -19,20 +55,19 @@ function TableColaboradores() {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {/*{rows.map((row) => (
+                {colaboradores.map(colaborador => (
                     <TableRow
-                    key={row.name}
+                    key={colaborador.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                     <TableCell component="th" scope="row">
-                        {row.name}
+                        {colaborador.name}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="right">{colaborador.email}</TableCell>
+                    <TableCell align="right">{colaborador.address.city}</TableCell>
+                    <TableCell align="right">{colaborador.company.name}</TableCell>
                     </TableRow>
-                ))}*/}
+                ))}
                 </TableBody>
             </Table>
             </TableContainer>
