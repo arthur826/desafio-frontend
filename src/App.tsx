@@ -1,11 +1,12 @@
 import './App.css'
+import TableColaboradores from './Components/Table'
 
 function App() {
 
 
   return (
     <>
-    <h1>Desafio front-end</h1>
+    <TableColaboradores />
     </>
   )
 }
