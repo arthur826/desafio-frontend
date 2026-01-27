@@ -5,6 +5,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+
 import { useEffect, useState } from 'react';
 
 //tipo de dados do colaborador
@@ -24,6 +26,12 @@ function TableColaboradores() {
 
 const [ colaboradores, setColaboradores ] = useState<Colaborador[]>([]);
 const [ loading, setLoading ] = useState(true);
+const [ buscarColaborador, setBuscarColaborador ] = useState("");
+
+//filtro de colaboradores por nome
+const colaboradoresFiltrados = colaboradores.filter(colaborador => colaborador.name.toLowerCase().includes(buscarColaborador.toLowerCase()));
+
+console.log(colaboradoresFiltrados);
 
 //chamada para a API
 useEffect(() => {
@@ -44,7 +52,9 @@ if (loading) {
 }
 
     return (
-          <TableContainer component={Paper}>
+        <>
+            <TextField id="outlined-basic" label="Buscar colaborador" variant="outlined" value={buscarColaborador} onChange={(e) => setBuscarColaborador(e.target.value)} />
+            <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                 <TableRow>
@@ -55,7 +65,7 @@ if (loading) {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {colaboradores.map(colaborador => (
+                {colaboradoresFiltrados.map(colaborador => (
                     <TableRow
                     key={colaborador.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -71,6 +81,7 @@ if (loading) {
                 </TableBody>
             </Table>
             </TableContainer>
+        </>
     )
 }
 
