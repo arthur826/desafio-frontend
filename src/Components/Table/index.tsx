@@ -27,11 +27,20 @@ function TableColaboradores() {
 const [ colaboradores, setColaboradores ] = useState<Colaborador[]>([]);
 const [ loading, setLoading ] = useState(true);
 const [ buscarColaborador, setBuscarColaborador ] = useState("");
+const [ ordenar, setOrdenar ] = useState("asc");
 
 //filtro de colaboradores por nome
 const colaboradoresFiltrados = colaboradores.filter(colaborador => colaborador.name.toLowerCase().includes(buscarColaborador.toLowerCase()));
-
-console.log(colaboradoresFiltrados);
+//função de ordenação
+const ordenarColaboradores = (colaboradores: Colaborador[]) => {
+    return [...colaboradores].sort((a, b) => {
+        if (ordenar === "asc") {
+            return a.name.localeCompare(b.name);
+        } 
+            return b.name.localeCompare(a.name);
+        });
+};
+const colaboradoresExibidos = ordenarColaboradores(colaboradoresFiltrados);
 
 //chamada para a API
 useEffect(() => {
@@ -54,6 +63,7 @@ if (loading) {
     return (
         <>
             <TextField id="outlined-basic" label="Buscar colaborador" variant="outlined" value={buscarColaborador} onChange={(e) => setBuscarColaborador(e.target.value)} />
+            <button onClick={() => setOrdenar(ordenar === "asc" ? "desc" : "asc")}>Ordenar</button>
             <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -65,7 +75,7 @@ if (loading) {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {colaboradoresFiltrados.map(colaborador => (
+                {colaboradoresExibidos.map(colaborador => (
                     <TableRow
                     key={colaborador.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
