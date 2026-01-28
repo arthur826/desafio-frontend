@@ -1,12 +1,15 @@
 import './App.css'
-import TableColaboradores from './Components/ColaboradoresPage'
+import { ColaboradoresProvider } from './Contexts/ColaboradoresProvider'
+import TableColaboradores from './Pages/ColaboradoresPage'
 
 function App() {
 
 
   return (
     <>
-    <TableColaboradores />
+      <ColaboradoresProvider>
+        <TableColaboradores />
+      </ColaboradoresProvider>
     </>
   )
 }
