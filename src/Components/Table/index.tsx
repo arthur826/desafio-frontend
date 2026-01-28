@@ -5,6 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
 import { useEffect, useState } from 'react';
 
@@ -49,11 +50,30 @@ const ordenarColaboradores = (colaboradores: Colaborador[]) => {
             return b.name.localeCompare(a.name);
         });
 };
-const colaboradoresExibidos = ordenarColaboradores(colaboradoresFiltrados).slice(0, 4);
 
 //puxar total de cidades e empresas únicas
 const totalCidades = new Set(colaboradores.map(colaborador => colaborador.address.city)).size;
 const totalEmpresas = new Set(colaboradores.map(colaborador => colaborador.company.name)).size;
+
+//logica de paginação
+const [page, setPage] = useState(0);
+const [rowsPerPage, setRowsPerPage] = useState(4);
+
+const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+}
+
+const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+}
+
+const colaboradoresOrdenados = ordenarColaboradores(colaboradoresFiltrados);
+
+const colaboradoresExibidos = colaboradoresOrdenados.slice(
+  page * rowsPerPage,
+  page * rowsPerPage + rowsPerPage
+);
 
 //chamada para a API
 useEffect(() => {
@@ -169,6 +189,17 @@ const cellStyle = {
                     ))}
                     </TableBody>
                 </Table>
+                <TablePagination
+                sx={{ border: "1px solid #dfdfdf" }}
+                component="div"
+                count={colaboradoresFiltrados.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                labelRowsPerPage="Linhas por página:"
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[4, 8, 10]}
+                />
             </TableContainer>
         </>
     )
