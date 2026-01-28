@@ -99,7 +99,10 @@ if (loading) {
 
             <Search
                 search={buscarColaborador}
-                onSearchChange={setBuscarColaborador}
+                onSearchChange={(value) => {
+                    setBuscarColaborador(value);
+                    setPage(0);
+                }}
                 order={ordenar}
                 onToggleOrder={() => setOrdenar(ordenar === "asc" ? "desc" : "asc")}
             />
