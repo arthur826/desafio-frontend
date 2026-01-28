@@ -12,6 +12,8 @@ export const ColaboradoresProvider = ({ children }: Props) => {
   const [ordenar, setOrdenar] = useState<'asc' | 'desc'>("asc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [erro, setErro] = useState<Error | null>(null);
+
 
   const colaboradoresFiltrados = colaboradores.filter(colaborador => colaborador.name.toLowerCase().includes(buscarColaborador.toLowerCase()));
 
@@ -42,18 +44,24 @@ export const ColaboradoresProvider = ({ children }: Props) => {
 
 
   //busca lista de colaboradores na API 
-    useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(data => {
-            setColaboradores(data);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error('Erro ao buscar colaboradores:', error);
-            setLoading(false);
-        });
-    }, []);
+   useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na resposta da API');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setColaboradores(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar colaboradores:', error);
+        setErro(new Error('Ops! Não conseguimos carregar os colaboradores. Tente novamente mais tarde.'));
+        setLoading(false);
+      });
+  }, []);
 
  return (
     <ColaboradoresContext.Provider
@@ -72,7 +80,8 @@ export const ColaboradoresProvider = ({ children }: Props) => {
         totalCidades,
         totalEmpresas,
         totalFiltrados: colaboradoresFiltrados.length,
-        mensagemErro
+        mensagemErro,
+        erro
       }}
     >
       {children}

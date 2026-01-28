@@ -24,6 +24,7 @@ function TableColaboradores() {
     totalEmpresas,
     totalFiltrados,
     colaboradores,
+    erro
   } = useColaboradores();
 
 if (loading) {
@@ -36,6 +37,8 @@ if (loading) {
       <CircularProgress />
     </Box>;
 }
+
+  if (erro) return <p>{erro.message}</p>;
 
     return (
         <>
