@@ -1,5 +1,5 @@
 import './App.css'
-import TableColaboradores from './Components/Table'
+import TableColaboradores from './Components/ColaboradoresPage'
 
 function App() {
 
