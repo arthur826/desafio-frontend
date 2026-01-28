@@ -5,9 +5,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
 
 import { useEffect, useState } from 'react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUpDown } from '@fortawesome/free-solid-svg-icons'
+import UserFoto from "../../assets/img/user.png"
+
+import {
+  faUsers,
+  faBuilding,
+  faCity
+} from '@fortawesome/free-solid-svg-icons'
 
 //tipo de dados do colaborador
 type Colaborador = {
@@ -40,7 +49,11 @@ const ordenarColaboradores = (colaboradores: Colaborador[]) => {
             return b.name.localeCompare(a.name);
         });
 };
-const colaboradoresExibidos = ordenarColaboradores(colaboradoresFiltrados);
+const colaboradoresExibidos = ordenarColaboradores(colaboradoresFiltrados).slice(0, 4);
+
+//puxar total de cidades e empresas únicas
+const totalCidades = new Set(colaboradores.map(colaborador => colaborador.address.city)).size;
+const totalEmpresas = new Set(colaboradores.map(colaborador => colaborador.company.name)).size;
 
 //chamada para a API
 useEffect(() => {
@@ -60,36 +73,102 @@ if (loading) {
     return <div>Carregando</div>;
 }
 
+//estilos
+
+const headerCellStyle = {
+  fontWeight: 600,
+  color: '#373e4b',
+  fontSize: '15px'
+};
+
+const cellStyle = {
+   fontWeight: 500,
+    color: '#838282',
+    padding: '22px 16px'
+};
     return (
         <>
-            <TextField id="outlined-basic" label="Buscar colaborador" variant="outlined" value={buscarColaborador} onChange={(e) => setBuscarColaborador(e.target.value)} />
-            <button onClick={() => setOrdenar(ordenar === "asc" ? "desc" : "asc")}>Ordenar</button>
-            <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                <TableRow>
-                    <TableCell>Nome</TableCell>
-                    <TableCell align="right">E-mail</TableCell>
-                    <TableCell align="right">Cidade</TableCell>
-                    <TableCell align="right">Empresa</TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                {colaboradoresExibidos.map(colaborador => (
-                    <TableRow
-                    key={colaborador.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                    <TableCell component="th" scope="row">
-                        {colaborador.name}
-                    </TableCell>
-                    <TableCell align="right">{colaborador.email}</TableCell>
-                    <TableCell align="right">{colaborador.address.city}</TableCell>
-                    <TableCell align="right">{colaborador.company.name}</TableCell>
+            <div className="cabecalho">
+                <div className="left">
+                    <h2>Colaboradores</h2>
+                    <p>Visualize e gerencie os colaboradores da empresa</p>
+                </div>
+                <div className="foto-user">
+                    <img src={UserFoto} alt="Foto do usuário" />
+                </div>
+            </div>
+            <ul className='cards-dados'>
+                <li>
+                    <FontAwesomeIcon 
+                    icon={faUsers}
+                    style={{ color: '#2c70c8', fontSize: '34px' }}
+                    />
+                    <div className="txt">
+                        <h3>Total de colaboradores</h3>
+                        <p>{colaboradores.length}</p>
+                    </div>
+                </li>
+                 <li>
+                    <FontAwesomeIcon 
+                        icon={faCity} 
+                        style={{ color: '#2c70c8', fontSize: '34px' }}
+                    />
+                    <div className="txt">
+                        <h3>Cidades Diferentes</h3>
+                        <p>{totalCidades}</p>
+                    </div>
+                </li>
+                 <li>
+                    <FontAwesomeIcon 
+                        icon={faBuilding}
+                        style={{ color: '#2c70c8', fontSize: '34px' }}
+                    />
+                    <div className="txt">
+                        <h3>Total de Empresas</h3>
+                        <p>{totalEmpresas}</p>
+                    </div>
+                </li>
+            </ul>
+            <div className='buscar'>
+                <input
+                    type="text"
+                    placeholder="Buscar colaborador pelo nome..."
+                    value={buscarColaborador}
+                    onChange={(e) => setBuscarColaborador(e.target.value)}
+                />
+                <button onClick={() => setOrdenar(ordenar === "asc" ? "desc" : "asc")}>Ordenar (A - Z) 
+                    <FontAwesomeIcon
+                        icon={faUpDown}
+                        style={{ color: '#2c70c8', fontSize: '18px' }}
+                    />
+                </button>
+            </div>
+            <TableContainer sx={{ boxShadow: "none" }} component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell  sx={headerCellStyle}>Nome</TableCell>
+                        <TableCell  sx={headerCellStyle} align="left">E-mail</TableCell>
+                        <TableCell  sx={headerCellStyle} align="left">Cidade</TableCell>
+                        <TableCell  sx={headerCellStyle} align="left">Empresa</TableCell>
                     </TableRow>
-                ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                    {colaboradoresExibidos.map(colaborador => (
+                        <TableRow
+                        key={colaborador.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                        <TableCell sx={cellStyle} component="th" scope="row">
+                            {colaborador.name}
+                        </TableCell>
+                        <TableCell sx={cellStyle} align="left">{colaborador.email}</TableCell>
+                        <TableCell sx={cellStyle} align="left">{colaborador.address.city}</TableCell>
+                        <TableCell sx={cellStyle} align="left">{colaborador.company.name}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
             </TableContainer>
         </>
     )
