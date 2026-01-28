@@ -23,7 +23,7 @@ function TableColaboradores() {
     totalCidades,
     totalEmpresas,
     totalFiltrados,
-    colaboradores
+    colaboradores,
   } = useColaboradores();
 
 if (loading) {
@@ -67,7 +67,10 @@ if (loading) {
                 rowsPerPage={rowsPerPage}
                 total={totalFiltrados}
                 onPageChange={(e, p) => setPage(p)}
-                onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value, 10))}
+                onRowsPerPageChange={(e) => {
+                setRowsPerPage(parseInt(e.target.value, 10));
+                setPage(0);
+                }}
             />
         </>
     )

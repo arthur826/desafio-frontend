@@ -17,9 +17,34 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+body {
+  padding: 5rem;
+}
+
+@media (max-width: 868px) {
+  body {
+    padding: 2rem;
+  }
+
+  #root {
+    max-width: 100%;
+  }
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 #root {
   width: 100%;
   max-width: 1250px;
+   padding: 0 1rem;
 }
 
 /* =========================

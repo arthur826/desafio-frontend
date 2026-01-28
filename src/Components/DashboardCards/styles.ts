@@ -7,6 +7,10 @@ export const CardsContainer = styled.ul`
   padding-bottom: 1rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid #5757571f;
+
+   @media (max-width: 650px) {
+    flex-direction: column;
+  }
 `;
 
 export const CardItem = styled.li`
@@ -23,16 +27,31 @@ export const CardItem = styled.li`
   &:hover {
     background: #f5f5f5;
   }
+
+  @media (max-width: 650px) {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 export const CardTitle = styled.h3`
   font-size: 16px;
   font-weight: 400;
   color: #373e4b;
+
+  @media (max-width: 650px) {
+    font-size: 14px;
+  }
 `;
 
 export const CardValue = styled.p`
   font-size: 22px;
   font-weight: 500;
   color: #373e4b;
+
+  
+  @media (max-width: 650px) {
+    font-size: 20px;
+  }
 `;

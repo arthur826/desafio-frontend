@@ -6,6 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
+import { useColaboradores } from "../../Contexts/useColaboradores";
 
 type Colaborador = {
   id: number;
@@ -25,6 +26,9 @@ type ColaboradoresTableProps  = {
 };
 
 function ColaboradoresTable({ colaboradores, page, rowsPerPage, total, onPageChange, onRowsPerPageChange }: ColaboradoresTableProps) {
+       const {
+          mensagemErro,
+      } = useColaboradores();
 
   const headerCellStyle = {
     fontWeight: 600,
@@ -39,7 +43,7 @@ function ColaboradoresTable({ colaboradores, page, rowsPerPage, total, onPageCha
   };
 
   return (
-    <TableContainer sx={{ boxShadow: "none" }} component={Paper}>
+    <TableContainer sx={{ boxShadow: "none",  overflowX: "auto", }} component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
@@ -51,6 +55,7 @@ function ColaboradoresTable({ colaboradores, page, rowsPerPage, total, onPageCha
         </TableHead>
 
         <TableBody>
+          {mensagemErro && <p style={{ color: "red", fontSize: "14px", padding: "3px", textAlign: "center" }}>{mensagemErro}</p>}
           {colaboradores.map((colaborador) => (
             <TableRow key={colaborador.id}>
               <TableCell sx={cellStyle}>{colaborador.name}</TableCell>

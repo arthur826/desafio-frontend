@@ -35,6 +35,12 @@ export const ColaboradoresProvider = ({ children }: Props) => {
 
   const toggleOrdenar = () => setOrdenar(ordenar === 'asc' ? 'desc' : 'asc');
 
+  const mensagemErro =
+  !loading && colaboradoresFiltrados.length === 0
+    ? "Nenhum colaborador encontrado."
+    : "";
+
+
   //busca lista de colaboradores na API 
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
@@ -65,7 +71,8 @@ export const ColaboradoresProvider = ({ children }: Props) => {
         colaboradoresExibidos,
         totalCidades,
         totalEmpresas,
-        totalFiltrados: colaboradoresFiltrados.length
+        totalFiltrados: colaboradoresFiltrados.length,
+        mensagemErro
       }}
     >
       {children}

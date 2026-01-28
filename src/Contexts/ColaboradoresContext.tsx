@@ -23,6 +23,7 @@ export type ColaboradoresContextType = {
   totalCidades: number;
   totalEmpresas: number;
   totalFiltrados: number;
+  mensagemErro: string;
 };
 
 export const ColaboradoresContext = createContext<ColaboradoresContextType | undefined>(undefined);

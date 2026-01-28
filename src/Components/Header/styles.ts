@@ -15,11 +15,23 @@ export const Text = styled.div``;
 export const Title = styled.h2`
   font-size: 28px;
   color: #373e4b;
+
+  @media (max-width: 650px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 22px;
+  }
 `;
 
 export const Subtitle = styled.p`
   font-size: 14px;
   color: #838282;
+
+  @media (max-width: 425px) {
+    font-size: 12px;
+  }
 `;
 
 export const UserPhoto = styled.div`

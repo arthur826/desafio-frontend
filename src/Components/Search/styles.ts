@@ -8,6 +8,11 @@ export const SearchContainer = styled.div`
   padding: 12px;
   border-radius: 5px;
   margin-bottom: 1rem;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
 `;
 
 export const SearchInput = styled.input`
